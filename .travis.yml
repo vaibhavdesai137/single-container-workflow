@@ -4,12 +4,11 @@ services:
 
 # Tag the image so we can refer it later since we cannot copy the image id returned by build command
 before_install:
-  - cd projects/01-build-test-deploy-workflow
-  - docker build -t vaibhavdesai137/01-build-test-deploy-workflow:latest -f Dockerfile.dev .
+  - docker build -t vaibhavdesai137/single-container-workflow:latest -f Dockerfile.dev .
 
 # Use the hyphens to terminate tests else "npm run test" will wait for user inputs
 script:
-  - docker run vaibhavdesai137/01-build-test-deploy-workflow:latest npm run test -- --coverage
+  - docker run vaibhavdesai137/single-container-workflow:latest npm run test -- --coverage
 
 # Deploying to aws beanstalk
 # Bucket is needed because travis will create a zip file and copy it over to aws
@@ -18,10 +17,10 @@ script:
 deploy:
   provider: elasticbeanstalk
   region: "us-west-1"
-  app: "01-build-test-deploy-workflow"
-  env: "01BuildTestDeployWorkflow-env"
+  app: "single-container-workflow"
+  env: "SingleContainerWorkflow-env"
   bucket_name: "elasticbeanstalk-us-west-1-849572186676"
-  bucket_path: "01-build-test-deploy-workflow"
+  bucket_path: "single-container-workflow"
   on:
     branch: master
   access_key_id: $AWS_ACCESS_KEY
